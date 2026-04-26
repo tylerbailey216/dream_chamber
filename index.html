@@ -1,0 +1,125 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Dream Chamber | Paint Lab</title>
+    <meta
+      name="description"
+      content="Enter the Dream Chamber and awaken a Spark, a guide, and an inspiration shift inside a surreal creative room."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bungee&family=Manrope:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="bg-layer bg-layer-a"></div>
+    <div class="bg-layer bg-layer-b"></div>
+    <div class="grain"></div>
+
+    <main class="chamber">
+      <section class="chamber-scene" aria-label="The Dream Chamber">
+        <img class="chamber-art" src="dream-chamber-painted-bg.png" alt="" aria-hidden="true" />
+
+        <!-- ambient atmosphere layers — not interactive -->
+        <div class="breathe" aria-hidden="true"></div>
+        <div class="lantern-ambient" id="lantern-ambient" aria-hidden="true"></div>
+        <div class="particles" aria-hidden="true">
+          <span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span>
+        </div>
+
+        <p class="room-whisper" id="room-whisper">The sigil sleeps. Touch it.</p>
+
+        <!-- Rug sigil — the first and primary spark trigger -->
+        <button class="hotspot hotspot-rug" id="generate-quest" type="button" aria-label="Touch the rug sigil to draw a spark">
+          <span class="sr-only">Touch the sigil</span>
+        </button>
+
+        <!-- Mirror — character forge, unlocks after first spark -->
+        <button class="hotspot hotspot-mirror" id="forge-character" type="button" aria-label="Touch the mirror to reveal a guide" disabled>
+          <span class="sr-only">Touch the mirror</span>
+        </button>
+
+        <!-- Orb — inspiration vault, unlocks after first spark -->
+        <button class="hotspot hotspot-vault" id="claim-loot" type="button" aria-label="Open the inspiration vault" disabled>
+          <span class="sr-only">Open the vault</span>
+        </button>
+
+        <!-- kept hidden for app.js compatibility -->
+        <p id="chamber-instruction" class="sr-only" aria-hidden="true">the canvas waits for light</p>
+
+        <!-- spark inscription — glowing text over the rug, no box -->
+        <div class="spark-float" aria-live="polite">
+          <p class="spark-inscription" id="quest-result"></p>
+          <button id="mutate-quest" class="chip-btn" type="button" hidden>draw again</button>
+          <button id="copy-spark" class="copy-btn" type="button" hidden aria-label="Copy spark to clipboard"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="13" height="13" fill="currentColor" aria-hidden="true"><path d="M10 1.5a.5.5 0 0 1 .5-.5h1A2.5 2.5 0 0 1 14 3.5v9a2.5 2.5 0 0 1-2.5 2.5h-7A2.5 2.5 0 0 1 2 12.5v-9A2.5 2.5 0 0 1 4.5 1h1a.5.5 0 0 1 0 1h-1A1.5 1.5 0 0 0 3 3.5v9A1.5 1.5 0 0 0 4.5 14h7A1.5 1.5 0 0 0 13 12.5v-9A1.5 1.5 0 0 0 11.5 2h-1a.5.5 0 0 1-.5-.5zm-4 0A.5.5 0 0 1 6.5 1h3a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1z"/></svg></button>
+        </div>
+
+        <!-- echo reveals — character and vault -->
+        <div class="echo-layers" aria-live="polite">
+          <div class="echo-card echo-character" id="forge-result" hidden>
+            The mirror is still dark.
+          </div>
+          <div class="echo-card echo-vault" id="loot-result" hidden>
+            The vault is still sealed.
+          </div>
+        </div>
+
+      </section>
+    </main>
+
+    <!-- ✦ Chamber guide — toggle pill + overlay -->
+    <button id="guide-toggle" class="guide-toggle" type="button" aria-label="Open chamber guide" aria-expanded="false">
+      ✦ guide
+    </button>
+
+    <div id="guide-overlay" class="guide-overlay" role="dialog" aria-modal="true" aria-label="How to read the chamber">
+      <button id="guide-close" class="guide-close" type="button" aria-label="Close guide">✕</button>
+      <div class="guide-content">
+        <h2 class="guide-heading">reading the chamber</h2>
+        <ol class="guide-steps">
+
+          <li class="guide-step">
+            <span class="guide-glyph" aria-hidden="true">◎</span>
+            <div>
+              <strong>The Rug Sigil</strong>
+              <p>The glowing circle at the floor's centre. Touch it to draw a <em>Spark</em> — a creative prompt pairing a subject, mood, medium, and compositional rule. Hit <em>draw again</em> to remix the mood and twist. Every result is paste-ready for any AI generator or prompt sheet.</p>
+            </div>
+          </li>
+
+          <li class="guide-step">
+            <span class="guide-glyph" aria-hidden="true">◫</span>
+            <div>
+              <strong>The Mirror</strong>
+              <p>Unlocks after your first Spark. Touch the tall mirror on the right wall to reveal a <em>Character Guide</em> — a named archetype carrying a trait and a story hook. Use them to anchor the painting, give it a subject, or ignore them entirely and let the Spark run free.</p>
+            </div>
+          </li>
+
+          <li class="guide-step">
+            <span class="guide-glyph" aria-hidden="true">◈</span>
+            <div>
+              <strong>The Orb</strong>
+              <p>Also unlocks after your first Spark. Touch the glowing sphere above the mirror to open the <em>Inspiration Vault</em>. Common drops give palette or compositional twists. Rare adds a wild redirect. Legendary drops a full session challenge or series seed.</p>
+            </div>
+          </li>
+
+          <li class="guide-step">
+            <span class="guide-glyph" aria-hidden="true">⎘</span>
+            <div>
+              <strong>Copy Icons</strong>
+              <p>Every piece of generated text has a small clipboard icon. Click it to copy clean text — no HTML, no extra characters — straight to your generator, notes app, or prompt sheet. It turns green to confirm.</p>
+            </div>
+          </li>
+
+        </ol>
+      </div>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
