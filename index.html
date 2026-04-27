@@ -6,7 +6,7 @@
     <title>The Dream Chamber | Paint Lab</title>
     <meta
       name="description"
-      content="Enter the Dream Chamber and awaken a Spark, a guide, and an inspiration shift inside a surreal creative room."
+      content="Enter the Dream Chamber and awaken an ancestral spark, a guiding spirit, and a blessing for your next painting."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -33,21 +33,21 @@
           <span></span><span></span><span></span><span></span>
         </div>
 
-        <p class="room-whisper" id="room-whisper">The sigil sleeps. Touch it.</p>
+        <p class="room-whisper" id="room-whisper">The mat is quiet. Wake the story.</p>
 
         <!-- Rug sigil — the first and primary spark trigger -->
-        <button class="hotspot hotspot-rug" id="generate-quest" type="button" aria-label="Touch the rug sigil to draw a spark">
-          <span class="sr-only">Touch the sigil</span>
+        <button class="hotspot hotspot-rug" id="generate-quest" type="button" aria-label="Touch the ancestral mat to draw a spark">
+          <span class="sr-only">Touch the ancestral mat</span>
         </button>
 
         <!-- Mirror — character forge, unlocks after first spark -->
-        <button class="hotspot hotspot-mirror" id="forge-character" type="button" aria-label="Touch the mirror to reveal a guide" disabled>
-          <span class="sr-only">Touch the mirror</span>
+        <button class="hotspot hotspot-mirror" id="forge-character" type="button" aria-label="Touch the spirit mirror to reveal a guide" disabled>
+          <span class="sr-only">Touch the spirit mirror</span>
         </button>
 
         <!-- Orb — inspiration vault, unlocks after first spark -->
-        <button class="hotspot hotspot-vault" id="claim-loot" type="button" aria-label="Open the inspiration vault" disabled>
-          <span class="sr-only">Open the vault</span>
+        <button class="hotspot hotspot-vault" id="claim-loot" type="button" aria-label="Open the calabash of blessings" disabled>
+          <span class="sr-only">Open the calabash of blessings</span>
         </button>
 
         <!-- kept hidden for app.js compatibility -->
@@ -63,48 +63,48 @@
         <!-- echo reveals — character and vault -->
         <div class="echo-layers" aria-live="polite">
           <div class="echo-card echo-character" id="forge-result" hidden>
-            The mirror is still dark.
+            The spirit mirror is still dark.
           </div>
           <div class="echo-card echo-vault" id="loot-result" hidden>
-            The vault is still sealed.
+            The calabash is still sealed.
           </div>
         </div>
 
       </section>
     </main>
 
-    <!-- ✦ Chamber guide — toggle pill + overlay -->
-    <button id="guide-toggle" class="guide-toggle" type="button" aria-label="Open chamber guide" aria-expanded="false">
-      ✦ guide
+    <!-- ✦ Shrine guide — toggle pill + overlay -->
+    <button id="guide-toggle" class="guide-toggle" type="button" aria-label="Open shrine guide" aria-expanded="false">
+      ✦ lore
     </button>
 
-    <div id="guide-overlay" class="guide-overlay" role="dialog" aria-modal="true" aria-label="How to read the chamber">
-      <button id="guide-close" class="guide-close" type="button" aria-label="Close guide">✕</button>
+    <div id="guide-overlay" class="guide-overlay" role="dialog" aria-modal="true" aria-label="How to read the shrine">
+      <button id="guide-close" class="guide-close" type="button" aria-label="Close shrine guide">✕</button>
       <div class="guide-content">
-        <h2 class="guide-heading">reading the chamber</h2>
+        <h2 class="guide-heading">reading the shrine</h2>
         <ol class="guide-steps">
 
           <li class="guide-step">
             <span class="guide-glyph" aria-hidden="true">◎</span>
             <div>
-              <strong>The Rug Sigil</strong>
-              <p>The glowing circle at the floor's centre. Touch it to draw a <em>Spark</em> — a creative prompt pairing a subject, mood, medium, and compositional rule. Hit <em>draw again</em> to remix the mood and twist. Every result is paste-ready for any AI generator or prompt sheet.</p>
+              <strong>The Ancestral Mat</strong>
+              <p>The woven circle at the floor's centre. Touch it to draw a <em>Spark</em> — a prompt pairing a figure, mood, medium, and compositional rule through a West African-inspired spiritual lens. Hit <em>draw again</em> to remix the mood and twist. Every result is ready for your prompt sheet or sketchbook.</p>
             </div>
           </li>
 
           <li class="guide-step">
             <span class="guide-glyph" aria-hidden="true">◫</span>
             <div>
-              <strong>The Mirror</strong>
-              <p>Unlocks after your first Spark. Touch the tall mirror on the right wall to reveal a <em>Character Guide</em> — a named archetype carrying a trait and a story hook. Use them to anchor the painting, give it a subject, or ignore them entirely and let the Spark run free.</p>
+              <strong>The Spirit Mirror</strong>
+              <p>Unlocks after your first Spark. Touch the tall mirror on the right wall to reveal a <em>Character Guide</em> — a named archetype carrying a trait and a story hook shaped by courtly memory, griot tradition, and ancestral presence. Use them to anchor the painting, or let the spark travel on its own.</p>
             </div>
           </li>
 
           <li class="guide-step">
             <span class="guide-glyph" aria-hidden="true">◈</span>
             <div>
-              <strong>The Orb</strong>
-              <p>Also unlocks after your first Spark. Touch the glowing sphere above the mirror to open the <em>Inspiration Vault</em>. Common drops give palette or compositional twists. Rare adds a wild redirect. Legendary drops a full session challenge or series seed.</p>
+              <strong>The Calabash</strong>
+              <p>Also unlocks after your first Spark. Touch the glowing vessel beneath the mirror to open the <em>Calabash of Blessings</em>. Common blessings shape palette or composition. Rare blessings shift the direction. Ancestral blessings open a full challenge or story cycle.</p>
             </div>
           </li>
 
@@ -112,7 +112,7 @@
             <span class="guide-glyph" aria-hidden="true">⎘</span>
             <div>
               <strong>Copy Icons</strong>
-              <p>Every piece of generated text has a small clipboard icon. Click it to copy clean text — no HTML, no extra characters — straight to your generator, notes app, or prompt sheet. It turns green to confirm.</p>
+              <p>Every generated line keeps a small clipboard icon. Click it to copy clean text — no HTML, no extra characters — straight to your notes, prompt sheet, or painting plan. It turns green to confirm.</p>
             </div>
           </li>
 
