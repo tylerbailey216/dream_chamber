@@ -126,6 +126,8 @@ function escapeHtml(text) {
 }
 
 function awakenChamber() {
+  forgeCharacterButton.dataset.dragUnlocked = "true";
+  claimLootButton.dataset.dragUnlocked = "true";
   forgeCharacterButton.disabled = false;
   claimLootButton.disabled = false;
   mutateQuestButton.hidden = false;
@@ -319,7 +321,10 @@ document.addEventListener("click", (e) => {
 /* ── Hotspot drag positioning tool (Shift+D to toggle) ───── */
 
 (function () {
-  const STORAGE_KEY = "chamber-hotspot-positions";
+  const STORAGE_KEY = "chamber-hotspot-admin-v2";
+  const ADMIN_KEY = "dream-chamber-admin-v1";
+  const adminParam = new URLSearchParams(window.location.search).get("admin");
+  let adminEnabled = adminParam === "1" || window.localStorage.getItem(ADMIN_KEY) === "true";
   let dragActive   = false;
   let dragging     = null;
   let resizing     = null;
@@ -327,6 +332,7 @@ document.addEventListener("click", (e) => {
   let startMX = 0, startMY = 0;
   let startLeft = 0, startTop = 0, startW = 0, startH = 0;
   let dragOffX = 0, dragOffY = 0;
+  let directListeners = new Map();
 
   const hotspots = [
     { el: document.getElementById("generate-quest"),  label: "rug"     },
@@ -334,6 +340,12 @@ document.addEventListener("click", (e) => {
     { el: document.getElementById("claim-loot"),      label: "vault"   },
     { el: document.getElementById("lantern-ambient"), label: "lantern" }
   ];
+  const HOTSPOT_SELECTORS = {
+    rug: ".hotspot-rug",
+    mirror: ".hotspot-mirror",
+    vault: ".hotspot-vault",
+    lantern: ".lantern-ambient"
+  };
 
   // ── HUD ────────────────────────────────────────────────────
   const hud = document.createElement("div");
@@ -346,6 +358,43 @@ document.addEventListener("click", (e) => {
     "white-space:pre", "text-align:left", "min-width:260px"
   ].join(";");
   document.body.appendChild(hud);
+
+  function makeAdminButton(label) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.textContent = label;
+    button.style.cssText = [
+      "appearance:none", "border:1px solid rgba(255,220,160,0.16)",
+      "border-radius:999px", "background:rgba(18,10,30,0.86)",
+      "color:rgba(255,228,180,0.82)", "padding:0.32rem 0.72rem",
+      "font:700 0.68rem/1 Manrope, sans-serif", "letter-spacing:0.12em",
+      "text-transform:lowercase", "cursor:pointer"
+    ].join(";");
+    return button;
+  }
+
+  const adminTray = document.createElement("div");
+  adminTray.id = "admin-tray";
+  adminTray.style.cssText = [
+    "position:fixed", "left:1.2rem", "bottom:1.2rem", "z-index:10020",
+    "display:none", "align-items:center", "gap:0.45rem", "flex-wrap:wrap",
+    "padding:0.55rem 0.65rem", "border-radius:16px",
+    "background:rgba(8,4,18,0.86)", "border:1px solid rgba(255,220,160,0.14)",
+    "box-shadow:0 12px 32px rgba(0,0,0,0.34)", "backdrop-filter:blur(10px)"
+  ].join(";");
+  const adminLabel = document.createElement("span");
+  adminLabel.textContent = "admin";
+  adminLabel.style.cssText = "color:rgba(255,220,160,0.46);font:800 0.62rem/1 Manrope, sans-serif;letter-spacing:0.16em;text-transform:uppercase;padding:0 0.12rem;";
+  const dragBtn = makeAdminButton("⊹ position");
+  const copyCssBtn = makeAdminButton("copy css");
+  const copyJsonBtn = makeAdminButton("copy json");
+  const resetBtn = makeAdminButton("reset");
+  adminTray.append(adminLabel, dragBtn, copyCssBtn, copyJsonBtn, resetBtn);
+  document.body.appendChild(adminTray);
+
+  function setAdminTrayState() {
+    adminTray.style.display = adminEnabled ? "flex" : "none";
+  }
 
   // ── Helpers ────────────────────────────────────────────────
   function getScene() { return document.querySelector(".chamber-scene"); }
@@ -377,6 +426,12 @@ document.addEventListener("click", (e) => {
       `Shift+D = exit & save  Shift+R = reset`;
   }
 
+  function flashAdminButton(button, text) {
+    const prev = button.textContent;
+    button.textContent = text;
+    window.setTimeout(() => { button.textContent = prev; }, 1100);
+  }
+
   function applyInlinePos(el) {
     const scene = getScene();
     const sw = scene.offsetWidth, sh = scene.offsetHeight;
@@ -393,41 +448,168 @@ document.addEventListener("click", (e) => {
   // ── Resize corner handles ──────────────────────────────────
   const CORNERS = ["nw", "ne", "sw", "se"];
 
+  // Handles live in a scene-level overlay so overflow:hidden on the
+  // hotspot (e.g. mirror) cannot clip them.
   function addHandles(el) {
-    CORNERS.forEach((c) => {
-      const h = document.createElement("span");
-      h.className = "drag-handle";
-      h.dataset.corner = c;
-      const isN = c.includes("n"), isW = c.includes("w");
-      h.style.cssText = [
-        "position:absolute", "width:12px", "height:12px",
-        "background:rgba(255,200,80,0.9)", "border-radius:3px",
-        "z-index:10001", "cursor:" + c + "-resize", "pointer-events:auto",
-        isN ? "top:-6px"  : "bottom:-6px",
-        isW ? "left:-6px" : "right:-6px"
-      ].join(";");
-      el.appendChild(h);
+    const scene = getScene();
+    const sr = scene.getBoundingClientRect();
+    const er = el.getBoundingClientRect();
+    const sw = scene.offsetWidth, sh = scene.offsetHeight;
+    const overlay = document.createElement("div");
+    overlay.className = "drag-handle-overlay";
+    overlay.dataset.forId = el.id;
+    overlay.dataset.dragLabel = el.getAttribute("data-drag-label") || "";
+    overlay.style.cssText = [
+      "position:absolute", "pointer-events:auto", "z-index:10000",
+      "cursor:grab", "background:transparent",
+      "left:" + ((er.left - sr.left) / sw * 100) + "%",
+      "top:"  + ((er.top  - sr.top)  / sh * 100) + "%",
+      "width:"  + (er.width  / sw * 100) + "%",
+      "height:" + (er.height / sh * 100) + "%"
+    ].join(";");
+    overlay.addEventListener("mousedown", (e) => {
+      if (!dragActive || e.target.closest(".drag-handle")) return;
+      e.preventDefault();
+      e.stopPropagation();
+      const rect = overlay.getBoundingClientRect();
+      const edge = 18;
+      const isN = (e.clientY - rect.top) <= edge;
+      const isS = (rect.bottom - e.clientY) <= edge;
+      const isW = (e.clientX - rect.left) <= edge;
+      const isE = (rect.right - e.clientX) <= edge;
+      const corner = (isN || isS) && (isW || isE)
+        ? (isN ? "n" : "s") + (isW ? "w" : "e")
+        : "";
+      if (corner) {
+        beginResize(el, corner, e);
+        overlay.style.cursor = corner + "-resize";
+        return;
+      }
+      beginDrag(el, e, overlay);
     });
+    scene.appendChild(overlay);
+    syncHandlePositions(el);
   }
 
   function removeHandles(el) {
-    el.querySelectorAll(".drag-handle").forEach((h) => h.remove());
+    const scene = getScene();
+    const ov = scene.querySelector(".drag-handle-overlay[data-for-id='" + el.id + "']");
+    if (ov) ov.remove();
+    scene.querySelectorAll(".drag-handle[data-for-id='" + el.id + "']").forEach((h) => h.remove());
   }
 
-  // ── Save / Load ────────────────────────────────────────────
-  function savePositions() {
+  function syncOverlay(el) {
+    const scene = getScene();
+    const ov = scene.querySelector(".drag-handle-overlay[data-for-id='" + el.id + "']");
+    if (!ov) return;
+    ov.style.left   = el.style.left;
+    ov.style.top    = el.style.top;
+    ov.style.cursor = dragging === el ? "grabbing" : "grab";
+    if (el.style.width)  ov.style.width  = el.style.width;
+    if (el.style.height) ov.style.height = el.style.height;
+    syncHandlePositions(el);
+  }
+
+  function syncHandlePositions(el) {
+    const scene = getScene();
+    const sr = scene.getBoundingClientRect();
+    const er = el.getBoundingClientRect();
+    CORNERS.forEach((corner) => {
+      let handle = scene.querySelector(".drag-handle[data-for-id='" + el.id + "'][data-corner='" + corner + "']");
+      if (!handle) {
+        handle = document.createElement("span");
+        handle.className = "drag-handle";
+        handle.dataset.corner = corner;
+        handle.dataset.forId = el.id;
+        handle.style.cssText = [
+          "position:absolute", "width:16px", "height:16px",
+          "background:rgba(255,200,80,0.98)", "border:1px solid rgba(32,12,0,0.65)",
+          "box-shadow:0 0 0 1px rgba(255,240,200,0.28), 0 0 14px rgba(255,180,60,0.5)",
+          "border-radius:4px", "pointer-events:auto", "z-index:10001", "display:block"
+        ].join(";");
+        scene.appendChild(handle);
+      }
+      const isN = corner.includes("n");
+      const isW = corner.includes("w");
+      handle.style.cursor = corner + "-resize";
+      handle.style.left = ((er.left - sr.left) + (isW ? 2 : er.width - 18)) + "px";
+      handle.style.top = ((er.top - sr.top) + (isN ? 2 : er.height - 18)) + "px";
+    });
+  }
+
+  function beginResize(el, corner, event) {
+    resizing     = el;
+    resizeCorner = corner;
+    const rect  = el.getBoundingClientRect();
+    const scene = getScene();
+    const sr    = scene.getBoundingClientRect();
+    const sw    = scene.offsetWidth, sh = scene.offsetHeight;
+    startMX   = event.clientX;
+    startMY   = event.clientY;
+    startLeft = (rect.left - sr.left) / sw * 100;
+    startTop  = (rect.top  - sr.top)  / sh * 100;
+    startW    = rect.width  / sw * 100;
+    startH    = rect.height / sh * 100;
+  }
+
+  function beginDrag(el, event, overlay) {
+    dragging = el;
+    const scene = getScene();
+    const sr    = scene.getBoundingClientRect();
+    const rect  = el.getBoundingClientRect();
+    const sw = scene.offsetWidth, sh = scene.offsetHeight;
+    el.style.right  = "auto";
+    el.style.bottom = "auto";
+    el.style.left   = ((rect.left - sr.left) / sw * 100) + "%";
+    el.style.top    = ((rect.top  - sr.top)  / sh * 100) + "%";
+    dragOffX = event.clientX - rect.left;
+    dragOffY = event.clientY - rect.top;
+    if (overlay) overlay.style.cursor = "grabbing";
+    el.style.cursor = "grabbing";
+  }
+
+  function buildPresetData() {
     const data = {};
     hotspots.forEach(({ el, label }) => {
       const p = readPos(el);
       data[label] = {
-        left: p.left + "%", top: p.top + "%",
-        width: p.width + "%", height: p.height + "%"
+        left: p.left + "%",
+        top: p.top + "%",
+        width: p.width + "%",
+        height: p.height + "%"
       };
     });
+    return data;
+  }
+
+  function buildCssPreset() {
+    const data = buildPresetData();
+    return [
+      "/* Dream Chamber hotspot preset */",
+      `${HOTSPOT_SELECTORS.lantern} { top: ${data.lantern.top}; left: ${data.lantern.left}; width: ${data.lantern.width}; height: ${data.lantern.height}; }`,
+      `${HOTSPOT_SELECTORS.rug} { top: ${data.rug.top}; left: ${data.rug.left}; width: ${data.rug.width}; height: ${data.rug.height}; }`,
+      `${HOTSPOT_SELECTORS.mirror} { top: ${data.mirror.top}; left: ${data.mirror.left}; width: ${data.mirror.width}; height: ${data.mirror.height}; }`,
+      `${HOTSPOT_SELECTORS.vault} { top: ${data.vault.top}; left: ${data.vault.left}; width: ${data.vault.width}; height: ${data.vault.height}; }`
+    ].join("\n");
+  }
+
+  function copyAdminText(button, text) {
+    navigator.clipboard.writeText(text).then(() => {
+      flashAdminButton(button, "copied");
+    }).catch(() => {
+      flashAdminButton(button, "failed");
+    });
+  }
+
+  // ── Save / Load ────────────────────────────────────────────
+  function savePositions() {
+    if (!adminEnabled) return;
+    const data = buildPresetData();
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
   }
 
   function loadSaved() {
+    if (!adminEnabled) return;
     try {
       const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
       hotspots.forEach(({ el, label }) => {
@@ -444,32 +626,54 @@ document.addEventListener("click", (e) => {
   }
 
   loadSaved();
+  setAdminTrayState();
+
+  let wasDisabled = new Set();
 
   // ── Enable / Disable ───────────────────────────────────────
   function enableDrag() {
+    if (!adminEnabled) return;
     dragActive = true;
+    if (dragBtn) { dragBtn.textContent = "⊹ done"; dragBtn.style.color = "rgba(255,200,80,0.8)"; dragBtn.style.borderColor = "rgba(255,200,80,0.4)"; }
     hud.style.display = "block";
     hud.textContent = "DRAG MODE ON\nDrag to move · Corner handles to resize\nScroll = width  Shift+Scroll = height\nShift+D = exit & save  Shift+R = reset";
     hotspots.forEach(({ el, label }) => {
       applyInlinePos(el);
+      if (el.disabled) { wasDisabled.add(el); el.disabled = false; }
       el.style.outline       = "2px dashed rgba(255,200,80,0.7)";
       el.style.opacity       = "1";
       el.style.cursor        = "grab";
       el.style.pointerEvents = "auto";
       el.setAttribute("data-drag-label", label);
       addHandles(el);
+      // Direct listener on the element — bypasses closest() delegation
+      // which breaks on border-radius:50% + overflow:hidden (mirror).
+      const onDown = (e) => {
+        if (!dragActive || e.target.closest(".drag-handle")) return;
+        e.preventDefault();
+        e.stopPropagation();
+        beginDrag(el, e);
+      };
+      el.addEventListener("mousedown", onDown);
+      directListeners.set(el, onDown);
     });
   }
 
   function disableDrag() {
+    if (!adminEnabled) return;
     dragActive = false;
     dragging = null;
     resizing = null;
+    if (dragBtn) { dragBtn.textContent = "⊹ position"; dragBtn.style.color = ""; dragBtn.style.borderColor = ""; }
     savePositions();
     hud.style.display = "block";
     hud.textContent = "Positions saved to browser.\nShift+R to reset to CSS defaults.";
     setTimeout(() => { hud.style.display = "none"; }, 2200);
     hotspots.forEach(({ el }) => {
+      const onDown = directListeners.get(el);
+      if (onDown) { el.removeEventListener("mousedown", onDown); directListeners.delete(el); }
+      if (wasDisabled.has(el) && el.dataset.dragUnlocked !== "true") { el.disabled = true; }
+      wasDisabled.delete(el);
       el.style.outline       = "";
       el.style.opacity       = "";
       el.style.cursor        = "";
@@ -494,9 +698,26 @@ document.addEventListener("click", (e) => {
   }
 
   // ── Keyboard ───────────────────────────────────────────────
+  function toggleDrag() { dragActive ? disableDrag() : enableDrag(); }
+  dragBtn.addEventListener("click", toggleDrag);
+  copyCssBtn.addEventListener("click", () => copyAdminText(copyCssBtn, buildCssPreset()));
+  copyJsonBtn.addEventListener("click", () => copyAdminText(copyJsonBtn, JSON.stringify(buildPresetData(), null, 2)));
+  resetBtn.addEventListener("click", resetSaved);
   document.addEventListener("keydown", (e) => {
-    if (e.shiftKey && e.key === "D") { dragActive ? disableDrag() : enableDrag(); }
-    if (e.shiftKey && e.key === "R" && !dragActive) { resetSaved(); }
+    if (e.ctrlKey && e.altKey && e.shiftKey && (e.key === "A" || e.key === "a" || e.code === "KeyA")) {
+      e.preventDefault();
+      const next = !(window.localStorage.getItem(ADMIN_KEY) === "true");
+      if (next) {
+        window.localStorage.setItem(ADMIN_KEY, "true");
+      } else {
+        window.localStorage.removeItem(ADMIN_KEY);
+      }
+      window.location.reload();
+      return;
+    }
+    if (!adminEnabled) return;
+    if (e.shiftKey && (e.key === "D" || e.key === "d" || e.code === "KeyD")) { toggleDrag(); }
+    if (e.shiftKey && (e.key === "R" || e.key === "r" || e.code === "KeyR") && !dragActive) { resetSaved(); }
   });
 
   // ── Mouse down ─────────────────────────────────────────────
@@ -507,37 +728,11 @@ document.addEventListener("click", (e) => {
     if (handle) {
       e.preventDefault();
       e.stopPropagation();
-      resizing     = handle.closest("[data-drag-label]");
-      resizeCorner = handle.dataset.corner;
-      const rect  = resizing.getBoundingClientRect();
-      const scene = getScene();
-      const sr    = scene.getBoundingClientRect();
-      const sw    = scene.offsetWidth, sh = scene.offsetHeight;
-      startMX   = e.clientX;
-      startMY   = e.clientY;
-      startLeft = (rect.left - sr.left) / sw * 100;
-      startTop  = (rect.top  - sr.top)  / sh * 100;
-      startW    = rect.width  / sw * 100;
-      startH    = rect.height / sh * 100;
+      beginResize(document.getElementById(handle.dataset.forId), handle.dataset.corner, e);
       return;
     }
 
-    const el = e.target.closest("[data-drag-label]");
-    if (!el) return;
-    e.preventDefault();
-    e.stopPropagation();
-    dragging = el;
-    const scene = getScene();
-    const sr    = scene.getBoundingClientRect();
-    const rect  = el.getBoundingClientRect();
-    const sw = scene.offsetWidth, sh = scene.offsetHeight;
-    el.style.right  = "auto";
-    el.style.bottom = "auto";
-    el.style.left   = ((rect.left - sr.left) / sw * 100) + "%";
-    el.style.top    = ((rect.top  - sr.top)  / sh * 100) + "%";
-    dragOffX = e.clientX - rect.left;
-    dragOffY = e.clientY - rect.top;
-    el.style.cursor = "grabbing";
+    // hotspot drag-start handled by direct listeners in enableDrag
   });
 
   // ── Mouse move ─────────────────────────────────────────────
@@ -559,6 +754,7 @@ document.addEventListener("click", (e) => {
       resizing.style.top    = nT + "%";
       resizing.style.width  = nW + "%";
       resizing.style.height = nH + "%";
+      syncOverlay(resizing);
       showHud(resizing.getAttribute("data-drag-label"), readPos(resizing));
       return;
     }
@@ -566,6 +762,7 @@ document.addEventListener("click", (e) => {
     if (dragging) {
       dragging.style.left = ((e.clientX - dragOffX - sr.left) / sw * 100) + "%";
       dragging.style.top  = ((e.clientY - dragOffY - sr.top)  / sh * 100) + "%";
+      syncOverlay(dragging);
       showHud(dragging.getAttribute("data-drag-label"), readPos(dragging));
     }
   });
@@ -574,12 +771,14 @@ document.addEventListener("click", (e) => {
   document.addEventListener("mouseup", () => {
     if (dragging) { dragging.style.cursor = "grab"; dragging = null; }
     resizing = null;
+    document.querySelectorAll(".drag-handle-overlay").forEach((ov) => { ov.style.cursor = "grab"; });
   });
 
   // ── Scroll to resize ───────────────────────────────────────
   document.addEventListener("wheel", (e) => {
     if (!dragActive) return;
-    const el = e.target.closest("[data-drag-label]");
+    const overlay = e.target.closest(".drag-handle-overlay[data-for-id]");
+    const el = overlay ? document.getElementById(overlay.dataset.forId) : e.target.closest("[data-drag-label]");
     if (!el) return;
     e.preventDefault();
     const scene = getScene();
@@ -597,6 +796,7 @@ document.addEventListener("click", (e) => {
       el.style.width = newW + "%";
       el.style.left  = (curCenter - newW / 2) + "%";
     }
+    syncOverlay(el);
     showHud(el.getAttribute("data-drag-label"), readPos(el));
   }, { passive: false });
 

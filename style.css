@@ -95,8 +95,8 @@ body {
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: center 18%;
+  object-fit: contain;
+  object-position: center center;
   filter: brightness(0.86) saturate(1.08) contrast(1.04);
   z-index: 1;
   transition: filter 2s ease;
@@ -182,10 +182,10 @@ body.vault-awake   .chamber-art { filter: brightness(0.94) saturate(1.16) contra
 
 .lantern-ambient {
   position: absolute;
-  top: 69.6%;
-  left: 13.9%;
-  width: 10.7%;
-  height: 18.8%;
+  top: 70.8%;
+  left: 29.7%;
+  width: 3.8%;
+  height: 12.3%;
   z-index: 4;
   pointer-events: none;
   border-radius: 30% 30% 46% 46%;
@@ -337,10 +337,10 @@ body.vault-awake  .room-whisper {
    A slow indigo pulse breathes before the first touch.      */
 
 .hotspot-rug {
-  top: 84.9%;
-  left: 21.1%;
-  width: 57.6%;
-  height: 21.9%;
+  top: 86.5%;
+  left: 32.1%;
+  width: 34.3%;
+  height: 22.2%;
   border-radius: 50%;
   animation: rugPulse 4.5s ease-in-out 1.8s infinite;
 }
@@ -371,10 +371,10 @@ body.spark-awake .hotspot-rug {
    A sweep of light ghosting across the glass every few sec  */
 
 .hotspot-mirror {
-  top: 1.9%;
-  left: 87.5%;
-  width: 44.0%;
-  height: 40.0%;
+  top: 8.6%;
+  left: 70.3%;
+  width: 9.4%;
+  height: 28.7%;
   border-radius: 50%;
   overflow: hidden;
 }
@@ -411,10 +411,10 @@ body.spark-awake .hotspot-rug {
 /* ── VAULT / ORB ────────────────────────────────────────────*/
 
 .hotspot-vault {
-  top: 45.9%;
-  left: 81.7%;
-  width: 13.0%;
-  height: 12.2%;
+  top: 67%;
+  left: 67.4%;
+  width: 9.8%;
+  height: 19.7%;
   border-radius: 50%;
 }
 
@@ -750,33 +750,12 @@ body.spark-awake .spark-inscription {
 
   .chamber-scene { height: 100vh; }
 
-  .chamber-art { object-position: 28% 18%; }
+  .chamber-art { object-position: center center; }
 
   .room-whisper {
     white-space: normal;
     max-width: 80vw;
     font-size: 0.74rem;
-  }
-
-  .hotspot-rug {
-    bottom: 2%;
-    left: 22%;
-    width: 55%;
-    height: 15%;
-  }
-
-  .hotspot-mirror {
-    top: 0%;
-    right: 0%;
-    width: 44%;
-    height: 40%;
-  }
-
-  .hotspot-vault {
-    top: 42%;
-    right: 1%;
-    width: 24%;
-    height: 14%;
   }
 
   .spark-float {
