@@ -342,7 +342,39 @@ body.vault-awake  .room-whisper {
   width: 34.3%;
   height: 22.2%;
   border-radius: 50%;
+  overflow: visible;
   animation: rugPulse 4.5s ease-in-out 1.8s infinite;
+}
+
+.hotspot-rug::before {
+  content: "";
+  position: absolute;
+  inset: 16% 18%;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 214, 138, 0.26);
+  box-shadow: 0 0 28px rgba(255, 178, 78, 0.12);
+  opacity: 0.7;
+  animation: sigilSpin 18s linear infinite;
+  pointer-events: none;
+}
+
+.hotspot-rug::after {
+  content: "";
+  position: absolute;
+  inset: -10%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 194, 112, 0.2) 0%,
+    rgba(148, 108, 255, 0.12) 38%,
+    rgba(84, 42, 168, 0.02) 70%,
+    transparent 78%
+  );
+  filter: blur(16px);
+  opacity: 0.56;
+  transform-origin: center;
+  animation: sigilAura 3.8s ease-in-out infinite;
+  pointer-events: none;
 }
 
 .hotspot-rug:hover,
@@ -358,6 +390,10 @@ body.spark-awake .hotspot-rug {
   animation: none;
 }
 
+body.spark-awake .hotspot-rug::after {
+  opacity: 0.32;
+}
+
 @keyframes rugPulse {
   0%, 100% { box-shadow: none; }
   50% {
@@ -365,6 +401,16 @@ body.spark-awake .hotspot-rug {
       0 0 44px rgba(120, 80, 220, 0.12),
       0 0 90px rgba(80, 40, 160, 0.07);
   }
+}
+
+@keyframes sigilAura {
+  0%, 100% { opacity: 0.46; transform: scale(0.98); }
+  50% { opacity: 0.92; transform: scale(1.05); }
+}
+
+@keyframes sigilSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 /* ── MIRROR ─────────────────────────────────────────────────
@@ -377,6 +423,31 @@ body.spark-awake .hotspot-rug {
   height: 28.7%;
   border-radius: 50%;
   overflow: hidden;
+}
+
+.hotspot-mirror:disabled {
+  opacity: 1;
+  pointer-events: none;
+  box-shadow:
+    0 0 22px rgba(162, 194, 255, 0.06),
+    inset 0 0 22px rgba(186, 214, 255, 0.05);
+}
+
+.hotspot-mirror:disabled::before {
+  content: "";
+  position: absolute;
+  inset: -18%;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at 50% 50%,
+    rgba(206, 222, 255, 0.14) 0%,
+    rgba(140, 178, 255, 0.08) 42%,
+    transparent 72%
+  );
+  filter: blur(18px);
+  opacity: 0.34;
+  animation: mirrorBreath 5.8s ease-in-out infinite;
+  pointer-events: none;
 }
 
 .hotspot-mirror::after {
@@ -406,6 +477,11 @@ body.spark-awake .hotspot-rug {
   8%   { opacity: 1; }
   22%  { transform: translateX( 140%) rotate( 8deg); opacity: 0; }
   100% { transform: translateX(-140%) rotate(-8deg); opacity: 0; }
+}
+
+@keyframes mirrorBreath {
+  0%, 100% { opacity: 0.2; transform: scale(0.985); }
+  50% { opacity: 0.46; transform: scale(1.025); }
 }
 
 /* ── VAULT / ORB ────────────────────────────────────────────*/
@@ -620,7 +696,17 @@ body.spark-awake .spark-inscription {
   padding: 0.32rem 0.84rem;
   cursor: pointer;
   text-transform: lowercase;
-  transition: color 260ms ease, border-color 260ms ease, background 260ms ease;
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+  transition: color 260ms ease, border-color 260ms ease, background 260ms ease, opacity 320ms ease, transform 320ms ease;
+}
+
+body.mirror-awake .guide-toggle,
+body.vault-awake .guide-toggle {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
 }
 
 .guide-toggle:hover,
