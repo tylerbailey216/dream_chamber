@@ -6,7 +6,7 @@
     <title>The Dream Chamber | Paint Lab</title>
     <meta
       name="description"
-      content="Enter the Dream Chamber and awaken an ancestral spark, a guiding spirit, and a blessing for your next painting."
+      content="Enter the Dream Chamber and awaken a neon spark, a ghost-guide, and a signal drop for your next painting."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -33,21 +33,21 @@
           <span></span><span></span><span></span><span></span>
         </div>
 
-        <p class="room-whisper" id="room-whisper">Wake the story.</p>
+        <p class="room-whisper" id="room-whisper">Boot the vision.</p>
 
         <!-- Rug sigil — the first and primary spark trigger -->
-        <button class="hotspot hotspot-rug" id="generate-quest" type="button" aria-label="Touch the ancestral mat to draw a spark">
-          <span class="sr-only">Touch the ancestral mat</span>
+        <button class="hotspot hotspot-rug" id="generate-quest" type="button" aria-label="Touch the signal sigil to draw a spark">
+          <span class="sr-only">Touch the signal sigil</span>
         </button>
 
         <!-- Mirror — character forge, unlocks after first spark -->
-        <button class="hotspot hotspot-mirror" id="forge-character" type="button" aria-label="Touch the spirit mirror to reveal a guide" disabled>
-          <span class="sr-only">Touch the spirit mirror</span>
+        <button class="hotspot hotspot-mirror" id="forge-character" type="button" aria-label="Touch the ghost mirror to reveal a guide" disabled>
+          <span class="sr-only">Touch the ghost mirror</span>
         </button>
 
         <!-- Orb — inspiration vault, unlocks after first spark -->
-        <button class="hotspot hotspot-vault" id="claim-loot" type="button" aria-label="Open the calabash of blessings" disabled>
-          <span class="sr-only">Open the calabash of blessings</span>
+        <button class="hotspot hotspot-vault" id="claim-loot" type="button" aria-label="Open the relic cache" disabled>
+          <span class="sr-only">Open the relic cache</span>
         </button>
 
         <!-- kept hidden for app.js compatibility -->
@@ -63,48 +63,48 @@
         <!-- echo reveals — character and vault -->
         <div class="echo-layers" aria-live="polite">
           <div class="echo-card echo-character" id="forge-result" hidden>
-            The spirit mirror is still dark.
+            The ghost mirror is still offline.
           </div>
           <div class="echo-card echo-vault" id="loot-result" hidden>
-            The calabash is still sealed.
+            The relic cache is still locked.
           </div>
         </div>
 
       </section>
     </main>
 
-    <!-- ✦ Shrine guide — toggle pill + overlay -->
-    <button id="guide-toggle" class="guide-toggle" type="button" aria-label="Open griot notes" aria-expanded="false">
-      ✦ griot
+    <!-- ✦ Grid guide — toggle pill + overlay -->
+    <button id="guide-toggle" class="guide-toggle" type="button" aria-label="Open daemon notes" aria-expanded="false">
+      ✦ daemon
     </button>
 
-    <div id="guide-overlay" class="guide-overlay" role="dialog" aria-modal="true" aria-label="How to read the shrine">
-      <button id="guide-close" class="guide-close" type="button" aria-label="Close griot notes">✕</button>
+    <div id="guide-overlay" class="guide-overlay" role="dialog" aria-modal="true" aria-label="How to read the grid">
+      <button id="guide-close" class="guide-close" type="button" aria-label="Close daemon notes">✕</button>
       <div class="guide-content">
-        <h2 class="guide-heading">reading the shrine</h2>
+        <h2 class="guide-heading">reading the grid</h2>
         <ol class="guide-steps">
 
           <li class="guide-step">
             <span class="guide-glyph" aria-hidden="true">◎</span>
             <div>
-              <strong>The Ancestral Mat</strong>
-              <p>The woven circle at the floor's centre. Touch it to draw a <em>Spark</em> — a prompt pairing a figure, mood, medium, and compositional rule through a West African-inspired spiritual lens. Hit <em>draw again</em> to remix the mood and twist. Every result is ready for your prompt sheet or sketchbook.</p>
+              <strong>The Signal Sigil</strong>
+              <p>The charged circle at the floor's centre. Touch it to draw a <em>Spark</em> — a prompt pairing a figure, mood, medium, and compositional rule through a neo-shamanic cyberpunk lens. Hit <em>draw again</em> to remix the mood and glitch. Every result is ready for your prompt sheet or sketchbook.</p>
             </div>
           </li>
 
           <li class="guide-step">
             <span class="guide-glyph" aria-hidden="true">◫</span>
             <div>
-              <strong>The Spirit Mirror</strong>
-              <p>Unlocks after your first Spark. Touch the tall mirror on the right wall to reveal a <em>Character Guide</em> — a named archetype carrying a trait and a story hook shaped by courtly memory, griot tradition, and ancestral presence. Use them to anchor the painting, or let the spark travel on its own.</p>
+              <strong>The Ghost Mirror</strong>
+              <p>Unlocks after your first Spark. Touch the tall mirror on the right wall to reveal a <em>Character Ghost</em> — a named archetype carrying a trait and a story hook shaped by street ritual, machine hauntings, and signal trance. Use them to anchor the painting, or let the spark drift on its own.</p>
             </div>
           </li>
 
           <li class="guide-step">
             <span class="guide-glyph" aria-hidden="true">◈</span>
             <div>
-              <strong>The Calabash</strong>
-              <p>Also unlocks after your first Spark. Touch the glowing vessel beneath the mirror to open the <em>Calabash of Blessings</em>. Common blessings shape palette or composition. Rare blessings shift the direction. Ancestral blessings open a full challenge or story cycle.</p>
+              <strong>The Relic Cache</strong>
+              <p>Also unlocks after your first Spark. Touch the glowing vessel beneath the mirror to open the <em>Relic Cache</em>. Common drops shape palette or composition. Rare drops bend the direction. Mythic drops open a full challenge thread or story cycle.</p>
             </div>
           </li>
 

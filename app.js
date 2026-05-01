@@ -1,98 +1,97 @@
 const subjects = [
-  "moonlit griot guardian",
-  "river-spirit diviner",
-  "indigo shrine archivist",
-  "talking-drum herald",
-  "bronze court oracle",
-  "forest-mask keeper",
-  "cowrie-robed mural keeper",
-  "lantern-bearer of the old road"
+  "neon trance runner",
+  "ghost-channel diviner",
+  "chrome shrine archivist",
+  "signal-drum herald",
+  "back-alley oracle mechanic",
+  "mask-coded grid keeper",
+  "circuit-robed mural witch",
+  "lantern-hacker of the dead network"
 ];
 
 const moods = [
-  "radiant",
-  "ancestral",
-  "storm-blessed",
-  "serene",
+  "neon-lit",
+  "ritual-charged",
+  "stormwired",
+  "dissociative",
   "mythic",
-  "celebratory",
-  "mysterious",
-  "royal"
+  "feral",
+  "hushed",
+  "ultraviolet"
 ];
 
 const mediums = [
-  "indigo dye textures",
-  "earth pigment layers",
-  "ink wash patterns",
-  "woven collage motifs",
-  "screenprint rhythm",
-  "watercolor glow"
+  "glitched ink washes",
+  "spraypaint haze",
+  "holographic collage motifs",
+  "circuit-burn textures",
+  "screenprint static",
+  "acid watercolor glow"
 ];
 
 const constraints = [
-  "keep the composition ceremonially balanced",
+  "keep the composition ritually balanced",
   "work with only three dominant colors",
-  "let open space carry the reverence",
-  "hide one sacred symbol in plain sight",
+  "let open space carry the signal",
+  "hide one coded sigil in plain sight",
   "use only curved movement",
-  "anchor the scene to a single lantern or moonlight source"
+  "anchor the scene to a single neon or moonlit source"
 ];
 
 const twists = [
-  "the background should carry an elder's second story",
-  "the image should feel like ancestral memory returning",
-  "a spirit-road map should hide in the shadows",
-  "the room should imply drumming after mourning",
-  "the piece should feel half shrine painting, half dream",
-  "something impossible should arrive with quiet dignity"
+  "the background should carry a second transmission",
+  "the image should feel like a memory leak from another timeline",
+  "a ghost-map should hide in the shadows",
+  "the room should imply bass after the blackout",
+  "the piece should feel half ritual, half nightclub apparition",
+  "something impossible should boot up with quiet authority"
 ];
 
-const names = ["Adjoa Sika", "Kofi Badu", "Efua Mensa", "Sade Afola", "Kwame Dela", "Aminata Soro"];
-const classes = ["Cowrie Diviner", "Griot Cartographer", "Bronze Warden", "Storm Praise-Singer", "Indigo Alchemist", "Echo Keeper"];
+const classes = ["Signal Diviner", "Ghost Cartographer", "Chrome Warden", "Storm Coder", "Neon Alchemist", "Echo Runner"];
 const traits = [
-  "cowrie charms braided into their cuffs",
-  "gold-thread gloves",
-  "adinkra-marked cloth wrapped at the shoulder",
-  "a stormglass amulet",
-  "a kora-string staff painted with symbols",
-  "bronze sigils at the collarbone"
+  "optic charms braided into their cuffs",
+  "conductive gloves stitched with silver thread",
+  "signal-marked fabric wrapped at the shoulder",
+  "a stormglass implant at the throat",
+  "a wire-strung staff painted with glyphs",
+  "chrome sigils at the collarbone"
 ];
 
 const hooks = [
-  "They guard a calabash of forgotten colors.",
-  "They paint rites that keep the spirit road open.",
-  "They are searching for seven lost symbols of blessing.",
-  "They left a royal court studio and never returned.",
-  "They restore shrine murals said to answer tomorrow's questions.",
-  "They carry a map that only appears under moonlight."
+  "They guard a relic cache of forbidden colors.",
+  "They paint rites that keep the ghost network open.",
+  "They are searching for seven lost sigils buried in the grid.",
+  "They left a luxury arcology studio and never came back.",
+  "They restore murals said to answer tomorrow's glitches.",
+  "They carry a map that only appears under ultraviolet rain."
 ];
 
 const paletteDrops = [
-  "Shift the whole piece into Royal Gold: bronze, black earth, and aged gold.",
-  "Move into River Night: indigo, deep navy, and ember coral.",
-  "Use healing tones: palm green, kola cream, and muted clay rose.",
-  "Let Sahel Light take over: sand, terracotta, and lit copper."
+  "Shift the whole piece into Chrome Gold: brass, oil black, and aged neon.",
+  "Move into Afterglow Night: ultraviolet, deep navy, and ember coral.",
+  "Use recovery tones: toxic jade, signal cream, and muted rust rose.",
+  "Let Gridlight take over: concrete sand, hazard orange, and lit copper."
 ];
 
 const twistDrops = [
-  "Hide a quiet symbol where the eye lands last.",
-  "Make the stillest corner the spiritual center.",
+  "Hide a quiet sigil where the eye lands last.",
+  "Make the stillest corner the psychic center.",
   "Break the image with one reflective omen.",
-  "Let the wall behind the subject remember an older ceremony."
+  "Let the wall behind the subject remember an older upload."
 ];
 
 const wildDrops = [
-  "Reframe it as a festival banner glowing at dusk.",
-  "Treat it like a praise-scroll from a lost court.",
-  "Make it read like a hand-painted masquerade poster.",
-  "Turn the idea into a public mural for a village square."
+  "Reframe it as a street relic glowing after curfew.",
+  "Treat it like a stolen scroll from a dead server cult.",
+  "Make it read like a hand-painted rave poster from the undercity.",
+  "Turn the idea into a public mural for a flooded transit wall."
 ];
 
 const legendaryDrops = [
-  "Expand it into a three-part series: calling, crossing, return.",
-  "Turn it into a guided communal painting rite.",
-  "Create twin versions: one for protection, one for celebration.",
-  "Grow the shrine reading into a full ancestral story cycle."
+  "Expand it into a three-part series: signal, breach, return.",
+  "Turn it into a guided communal paint ritual.",
+  "Create twin versions: one for shielding, one for overload.",
+  "Grow the grid reading into a full mythic story cycle."
 ];
 
 const COPY_BTN_HTML = '<button class="copy-btn echo-copy-btn" type="button" aria-label="Copy to clipboard"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="13" height="13" fill="currentColor" aria-hidden="true"><path d="M10 1.5a.5.5 0 0 1 .5-.5h1A2.5 2.5 0 0 1 14 3.5v9a2.5 2.5 0 0 1-2.5 2.5h-7A2.5 2.5 0 0 1 2 12.5v-9A2.5 2.5 0 0 1 4.5 1h1a.5.5 0 0 1 0 1h-1A1.5 1.5 0 0 0 3 3.5v9A1.5 1.5 0 0 0 4.5 14h7A1.5 1.5 0 0 0 13 12.5v-9A1.5 1.5 0 0 0 11.5 2h-1a.5.5 0 0 1-.5-.5zm-4 0A.5.5 0 0 1 6.5 1h3a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1z"/></svg></button>';
@@ -132,8 +131,8 @@ function awakenChamber() {
   claimLootButton.disabled = false;
   mutateQuestButton.hidden = false;
   document.getElementById("copy-spark").hidden = false;
-  chamberInstruction.textContent = "the shrine warms with memory";
-  roomWhisper.textContent = "an elder presence has drawn near";
+  chamberInstruction.textContent = "the grid hums awake";
+  roomWhisper.textContent = "a ghost signal has entered the room";
   document.body.classList.add("spark-awake");
 }
 
@@ -185,7 +184,6 @@ function revealCharacter() {
   }
 
   lastCharacter = {
-    name: pick(names),
     archetype: pick(classes),
     trait: pick(traits),
     hook: pick(hooks)
@@ -193,11 +191,11 @@ function revealCharacter() {
 
   forgeResult.hidden = false;
   forgeResult.innerHTML = [
-    `In the spirit mirror: ${escapeHtml(lastCharacter.name)}, ${escapeHtml(lastCharacter.archetype)}.`,
+    `In the ghost mirror: a ${escapeHtml(lastCharacter.archetype)}.`,
     `They carry ${escapeHtml(lastCharacter.trait)}.`,
     `${escapeHtml(lastCharacter.hook)}`
   ].join(" ") + COPY_BTN_HTML;
-  roomWhisper.textContent = "a guiding spirit gathers in the glass";
+  roomWhisper.textContent = "a ghost-guide gathers in the glass";
   document.body.classList.add("mirror-awake");
 }
 
@@ -205,22 +203,22 @@ function pickRarity() {
   const roll = Math.random();
 
   if (roll < 0.6) {
-    return "Common Blessing";
+    return "Common Drop";
   }
 
   if (roll < 0.9) {
-    return "Rare Blessing";
+    return "Rare Drop";
   }
 
-  return "Ancestral Blessing";
+  return "Mythic Drop";
 }
 
 function buildVaultDrop() {
   const rarity = pickRarity();
   const focus = lastSpark ? `${lastSpark.subject}` : "current image";
-  const characterNote = lastCharacter ? ` guided by ${lastCharacter.name}` : "";
+  const characterNote = lastCharacter ? ` guided by a ${lastCharacter.archetype}` : "";
 
-  if (rarity === "Ancestral Blessing") {
+  if (rarity === "Mythic Drop") {
     return {
       rarity,
       className: "rarity-legendary",
@@ -228,13 +226,13 @@ function buildVaultDrop() {
     };
   }
 
-  const pools = rarity === "Rare Blessing"
+  const pools = rarity === "Rare Drop"
     ? [paletteDrops, twistDrops, wildDrops]
     : [paletteDrops, twistDrops];
 
   return {
     rarity,
-    className: rarity === "Rare Blessing" ? "rarity-rare" : "rarity-common",
+    className: rarity === "Rare Drop" ? "rarity-rare" : "rarity-common",
     text: `For the ${focus}${characterNote}, ${pick(pools[Math.floor(Math.random() * pools.length)])}`
   };
 }
@@ -248,7 +246,7 @@ function openVault() {
   lootResult.hidden = false;
   lootResult.className = `echo-card echo-vault ${vault.className}`;
   lootResult.innerHTML = `<span class="rarity-badge">${escapeHtml(vault.rarity)}</span><br />${escapeHtml(vault.text)}` + COPY_BTN_HTML;
-  roomWhisper.textContent = "the room rearranges itself around the blessing";
+  roomWhisper.textContent = "the room rewrites itself around the drop";
   document.body.classList.add("vault-awake");
 }
 
