@@ -139,7 +139,7 @@ function awakenChamber() {
   claimLootButton.disabled = false;
   sparkActions.hidden = false;
   chamberInstruction.textContent = "the grid hums awake";
-  setWhisper("a ghost signal has entered the room", "shape it... or reroute it");
+  setWhisper("you have a signal", "shape it or reroute");
   document.body.classList.add("spark-awake");
 }
 
@@ -184,7 +184,7 @@ function mutateSpark() {
     twist: pick(twists.filter((item) => item !== lastSpark.twist))
   });
 
-  setWhisper("the signal bends into a new path", "keep rerouting... or bring it to life");
+  setWhisper("the signal shifts", "reroute or make it real");
 }
 
 function revealCharacter() {
@@ -204,7 +204,7 @@ function revealCharacter() {
     `They carry ${escapeHtml(lastCharacter.trait)}.`,
     `${escapeHtml(lastCharacter.hook)}`
   ].join(" ") + COPY_BTN_HTML;
-  setWhisper("a ghost-guide gathers in the glass", "the cache hums with signal");
+  setWhisper("the mirror is awake", "something waits inside");
   document.body.classList.add("mirror-awake");
 }
 
@@ -255,7 +255,7 @@ function openVault() {
   lootResult.hidden = false;
   lootResult.className = `echo-card echo-vault ${vault.className}`;
   lootResult.innerHTML = `<span class="rarity-badge">${escapeHtml(vault.rarity)}</span><br />${escapeHtml(vault.text)}` + COPY_BTN_HTML;
-  setWhisper("the room rewrites itself around the drop", "reroute it... or bring it to life");
+  setWhisper("the cache opens", "reroute or bring it to life");
   document.body.classList.add("vault-awake");
 }
 
@@ -264,7 +264,7 @@ function bringSparkToLife() {
     return;
   }
 
-  setWhisper("step into the canvas", "the chamber is ready for your hand");
+  setWhisper("stop searching", "start making");
 }
 
 generateQuestButton.addEventListener("click", () => buildSpark());
