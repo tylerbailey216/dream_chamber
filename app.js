@@ -30,21 +30,21 @@ const mediums = [
 ];
 
 const constraints = [
-  "keep the composition ritually balanced",
-  "work with only three dominant colors",
-  "let open space carry the signal",
-  "hide one coded sigil in plain sight",
-  "use only curved movement",
-  "anchor the scene to a single neon or moonlit source"
+  "keep it balanced",
+  "three colors max",
+  "leave some space open",
+  "hide one sigil",
+  "use curved movement",
+  "one light source only"
 ];
 
 const twists = [
-  "the background should carry a second transmission",
-  "the image should feel like a memory leak from another timeline",
-  "a ghost-map should hide in the shadows",
-  "the room should imply bass after the blackout",
-  "the piece should feel half ritual, half nightclub apparition",
-  "something impossible should boot up with quiet authority"
+  "add a second signal",
+  "make it feel half-remembered",
+  "hide a ghost-map",
+  "let it hum after the blackout",
+  "make it ritual and nocturnal",
+  "let something impossible wake up"
 ];
 
 const classes = ["Signal Diviner", "Ghost Cartographer", "Chrome Warden", "Storm Coder", "Neon Alchemist", "Echo Runner"];
@@ -161,7 +161,8 @@ function buildSpark(override = {}) {
   };
 
   const text = [
-    `A ${spark.mood} ${spark.subject} arrives in ${spark.medium}.`,
+    `${spark.mood} ${spark.subject}.`,
+    `${spark.medium}.`,
     `${spark.constraint}.`,
     `${spark.twist}.`
   ].join(" ");
