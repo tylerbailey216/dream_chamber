@@ -112,6 +112,8 @@ const claimLootButton = document.getElementById("claim-loot");
 
 let lastSpark = null;
 let lastCharacter = null;
+let rerouteCount = 0;
+let mirrorWakeTimeout = null;
 
 const pick = (items) => items[Math.floor(Math.random() * items.length)];
 
@@ -127,20 +129,68 @@ function escapeHtml(text) {
   return String(text).replace(/[&<>"']/g, (char) => replacements[char]);
 }
 
-function setWhisper(text, note) {
+function setWhisper(text, note = "") {
   roomWhisper.textContent = text;
   roomWhisperNote.textContent = note;
+  roomWhisperNote.hidden = !note;
 }
 
-function awakenChamber() {
+function clearMirrorWakeTimeout() {
+  if (mirrorWakeTimeout) {
+    clearTimeout(mirrorWakeTimeout);
+    mirrorWakeTimeout = null;
+  }
+}
+
+function unlockMirror() {
+  mutateQuestButton.hidden = true;
+  forgeCharacterButton.disabled = false;
+  setWhisper("the mirror is awake", "touch it");
+}
+
+function unlockVault() {
+  claimLootButton.disabled = false;
+  setWhisper("something changed", "touch it");
+}
+
+function showBringToLife() {
+  mutateQuestButton.hidden = true;
+  bringToLifeButton.hidden = false;
+  setWhisper("bring it to life", "just start");
+}
+
+function scheduleMirrorWake() {
+  clearMirrorWakeTimeout();
+  mirrorWakeTimeout = setTimeout(() => {
+    mirrorWakeTimeout = null;
+
+    if (!lastSpark || !forgeCharacterButton.disabled) {
+      return;
+    }
+
+    unlockMirror();
+  }, 2600);
+}
+
+function awakenChamber({ mirrorReady = false } = {}) {
   forgeCharacterButton.dataset.dragUnlocked = "true";
   claimLootButton.dataset.dragUnlocked = "true";
-  forgeCharacterButton.disabled = false;
-  claimLootButton.disabled = false;
+  forgeCharacterButton.disabled = true;
+  claimLootButton.disabled = true;
   sparkActions.hidden = false;
+  mutateQuestButton.hidden = false;
+  bringToLifeButton.hidden = true;
   chamberInstruction.textContent = "the grid hums awake";
-  setWhisper("you have a spark", "keep it or reroute");
+  setWhisper("you have a spark", "reroute");
   document.body.classList.add("spark-awake");
+
+  if (mirrorReady) {
+    clearMirrorWakeTimeout();
+    unlockMirror();
+    return;
+  }
+
+  scheduleMirrorWake();
 }
 
 function clearSecondaryRevelations() {
@@ -151,7 +201,7 @@ function clearSecondaryRevelations() {
   lastCharacter = null;
 }
 
-function buildSpark(override = {}) {
+function buildSpark(override = {}, options = {}) {
   const spark = {
     mood: override.mood || pick(moods),
     subject: override.subject || pick(subjects),
@@ -169,8 +219,9 @@ function buildSpark(override = {}) {
 
   questResult.textContent = text;
   lastSpark = spark;
+  rerouteCount = options.isReroute ? rerouteCount + 1 : 0;
   clearSecondaryRevelations();
-  awakenChamber();
+  awakenChamber({ mirrorReady: rerouteCount > 0 });
 }
 
 function mutateSpark() {
@@ -183,9 +234,7 @@ function mutateSpark() {
     ...lastSpark,
     mood: pick(moods.filter((item) => item !== lastSpark.mood)),
     twist: pick(twists.filter((item) => item !== lastSpark.twist))
-  });
-
-  setWhisper("you have a spark", "keep it or reroute");
+  }, { isReroute: true });
 }
 
 function revealCharacter() {
@@ -205,7 +254,8 @@ function revealCharacter() {
     `They carry ${escapeHtml(lastCharacter.trait)}.`,
     `${escapeHtml(lastCharacter.hook)}`
   ].join(" ") + COPY_BTN_HTML;
-  setWhisper("the mirror is awake", "something waits");
+  clearMirrorWakeTimeout();
+  unlockVault();
   document.body.classList.add("mirror-awake");
 }
 
@@ -256,7 +306,7 @@ function openVault() {
   lootResult.hidden = false;
   lootResult.className = `echo-card echo-vault ${vault.className}`;
   lootResult.innerHTML = `<span class="rarity-badge">${escapeHtml(vault.rarity)}</span><br />${escapeHtml(vault.text)}` + COPY_BTN_HTML;
-  setWhisper("something waits", "bring it to life");
+  showBringToLife();
   document.body.classList.add("vault-awake");
 }
 
@@ -265,6 +315,7 @@ function bringSparkToLife() {
     return;
   }
 
+  clearMirrorWakeTimeout();
   setWhisper("bring it to life", "just start");
 }
 
