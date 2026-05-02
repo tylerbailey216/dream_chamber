@@ -58,40 +58,40 @@ const traits = [
 ];
 
 const hooks = [
-  "They guard a relic cache of forbidden colors.",
-  "They paint rites that keep the ghost network open.",
-  "They are searching for seven lost sigils buried in the grid.",
-  "They left a luxury arcology studio and never came back.",
-  "They restore murals said to answer tomorrow's glitches.",
-  "They carry a map that only appears under ultraviolet rain."
+  "guards forbidden colors",
+  "keeps the ghost network open",
+  "hunts lost sigils",
+  "never came back from the arcology",
+  "restores prophetic murals",
+  "carries a map for ultraviolet rain"
 ];
 
 const paletteDrops = [
-  "Shift the whole piece into Chrome Gold: brass, oil black, and aged neon.",
-  "Move into Afterglow Night: ultraviolet, deep navy, and ember coral.",
-  "Use recovery tones: toxic jade, signal cream, and muted rust rose.",
-  "Let Gridlight take over: concrete sand, hazard orange, and lit copper."
+  "Chrome Gold: brass, oil black, aged neon",
+  "Afterglow Night: ultraviolet, deep navy, ember coral",
+  "Recovery tones: toxic jade, signal cream, rust rose",
+  "Gridlight: concrete sand, hazard orange, lit copper"
 ];
 
 const twistDrops = [
-  "Hide a quiet sigil where the eye lands last.",
-  "Make the stillest corner the psychic center.",
-  "Break the image with one reflective omen.",
-  "Let the wall behind the subject remember an older upload."
+  "hide a quiet sigil",
+  "make the stillest corner the center",
+  "add one reflective omen",
+  "let the wall remember an older upload"
 ];
 
 const wildDrops = [
-  "Reframe it as a street relic glowing after curfew.",
-  "Treat it like a stolen scroll from a dead server cult.",
-  "Make it read like a hand-painted rave poster from the undercity.",
-  "Turn the idea into a public mural for a flooded transit wall."
+  "street relic after curfew",
+  "stolen scroll from a dead server cult",
+  "hand-painted rave poster from the undercity",
+  "public mural for a flooded transit wall"
 ];
 
 const legendaryDrops = [
-  "Expand it into a three-part series: signal, breach, return.",
-  "Turn it into a guided communal paint ritual.",
-  "Create twin versions: one for shielding, one for overload.",
-  "Grow the grid reading into a full mythic story cycle."
+  "three-part series: signal, breach, return",
+  "communal paint ritual",
+  "twin versions: shielding and overload",
+  "full mythic story cycle"
 ];
 
 const COPY_BTN_HTML = '<button class="copy-btn echo-copy-btn" type="button" aria-label="Copy to clipboard"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="13" height="13" fill="currentColor" aria-hidden="true"><path d="M10 1.5a.5.5 0 0 1 .5-.5h1A2.5 2.5 0 0 1 14 3.5v9a2.5 2.5 0 0 1-2.5 2.5h-7A2.5 2.5 0 0 1 2 12.5v-9A2.5 2.5 0 0 1 4.5 1h1a.5.5 0 0 1 0 1h-1A1.5 1.5 0 0 0 3 3.5v9A1.5 1.5 0 0 0 4.5 14h7A1.5 1.5 0 0 0 13 12.5v-9A1.5 1.5 0 0 0 11.5 2h-1a.5.5 0 0 1-.5-.5zm-4 0A.5.5 0 0 1 6.5 1h3a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1z"/></svg></button>';
@@ -250,9 +250,9 @@ function revealCharacter() {
 
   forgeResult.hidden = false;
   forgeResult.innerHTML = [
-    `In the ghost mirror: a ${escapeHtml(lastCharacter.archetype)}.`,
-    `They carry ${escapeHtml(lastCharacter.trait)}.`,
-    `${escapeHtml(lastCharacter.hook)}`
+    `${escapeHtml(lastCharacter.archetype)}.`,
+    `${escapeHtml(lastCharacter.trait)}.`,
+    `${escapeHtml(lastCharacter.hook)}.`
   ].join(" ") + COPY_BTN_HTML;
   clearMirrorWakeTimeout();
   unlockVault();
@@ -276,13 +276,13 @@ function pickRarity() {
 function buildVaultDrop() {
   const rarity = pickRarity();
   const focus = lastSpark ? `${lastSpark.subject}` : "current image";
-  const characterNote = lastCharacter ? ` guided by a ${lastCharacter.archetype}` : "";
+  const characterNote = lastCharacter ? `guide: ${lastCharacter.archetype}` : "";
 
   if (rarity === "Mythic Drop") {
     return {
       rarity,
       className: "rarity-legendary",
-      text: `For the ${focus}${characterNote}, ${pick(legendaryDrops)}`
+      text: [focus, characterNote, pick(legendaryDrops)].filter(Boolean).join(" · ")
     };
   }
 
@@ -293,7 +293,7 @@ function buildVaultDrop() {
   return {
     rarity,
     className: rarity === "Rare Drop" ? "rarity-rare" : "rarity-common",
-    text: `For the ${focus}${characterNote}, ${pick(pools[Math.floor(Math.random() * pools.length)])}`
+    text: [focus, characterNote, pick(pools[Math.floor(Math.random() * pools.length)])].filter(Boolean).join(" · ")
   };
 }
 
