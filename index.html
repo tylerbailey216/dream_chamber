@@ -59,8 +59,10 @@
         <!-- spark inscription — glowing text over the rug, no box -->
         <div class="spark-float" aria-live="polite">
           <p class="spark-inscription" id="quest-result"></p>
-          <button id="mutate-quest" class="chip-btn" type="button" hidden>draw again</button>
-          <button id="copy-spark" class="copy-btn" type="button" hidden aria-label="Copy spark to clipboard"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="13" height="13" fill="currentColor" aria-hidden="true"><path d="M10 1.5a.5.5 0 0 1 .5-.5h1A2.5 2.5 0 0 1 14 3.5v9a2.5 2.5 0 0 1-2.5 2.5h-7A2.5 2.5 0 0 1 2 12.5v-9A2.5 2.5 0 0 1 4.5 1h1a.5.5 0 0 1 0 1h-1A1.5 1.5 0 0 0 3 3.5v9A1.5 1.5 0 0 0 4.5 14h7A1.5 1.5 0 0 0 13 12.5v-9A1.5 1.5 0 0 0 11.5 2h-1a.5.5 0 0 1-.5-.5zm-4 0A.5.5 0 0 1 6.5 1h3a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1z"/></svg></button>
+          <div class="spark-actions" hidden id="spark-actions">
+            <button id="mutate-quest" class="chip-btn" type="button">reroute</button>
+            <button id="bring-to-life" class="chip-btn chip-btn-primary" type="button">bring to life</button>
+          </div>
         </div>
 
         <!-- echo reveals — character and vault -->
@@ -91,7 +93,7 @@
             <span class="guide-glyph" aria-hidden="true">◎</span>
             <div>
               <strong>The Signal Sigil</strong>
-              <p>The charged circle at the floor's centre. Touch it to draw a <em>Spark</em> — a prompt pairing a figure, mood, medium, and compositional rule through a neo-shamanic cyberpunk lens. Hit <em>draw again</em> to remix the mood and glitch. Every result is ready for your prompt sheet or sketchbook.</p>
+              <p>The charged circle at the floor's centre. Touch it to draw a <em>Spark</em> — a starting signal pairing figure, mood, medium, and compositional rule through a neo-shamanic cyberpunk lens. Hit <em>reroute</em> to bend the signal into a new variation, then use it as the first move for what you make here.</p>
             </div>
           </li>
 
@@ -112,10 +114,10 @@
           </li>
 
           <li class="guide-step">
-            <span class="guide-glyph" aria-hidden="true">⎘</span>
+            <span class="guide-glyph" aria-hidden="true">⬡</span>
             <div>
-              <strong>Copy Icons</strong>
-              <p>Every generated line keeps a small clipboard icon. Click it to copy clean text — no HTML, no extra characters — straight to your notes, prompt sheet, or painting plan. It turns green to confirm.</p>
+              <strong>Bring It To Life</strong>
+              <p>Once the spark feels right, stop rerouting and move forward. The chamber is meant to carry you from signal to action, not send you elsewhere.</p>
             </div>
           </li>
 

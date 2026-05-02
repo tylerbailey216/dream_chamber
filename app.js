@@ -102,9 +102,11 @@ const lootResult = document.getElementById("loot-result");
 const chamberInstruction = document.getElementById("chamber-instruction");
 const roomWhisper = document.getElementById("room-whisper");
 const roomWhisperNote = document.getElementById("room-whisper-note");
+const sparkActions = document.getElementById("spark-actions");
 
 const generateQuestButton = document.getElementById("generate-quest");
 const mutateQuestButton = document.getElementById("mutate-quest");
+const bringToLifeButton = document.getElementById("bring-to-life");
 const forgeCharacterButton = document.getElementById("forge-character");
 const claimLootButton = document.getElementById("claim-loot");
 
@@ -135,10 +137,9 @@ function awakenChamber() {
   claimLootButton.dataset.dragUnlocked = "true";
   forgeCharacterButton.disabled = false;
   claimLootButton.disabled = false;
-  mutateQuestButton.hidden = false;
-  document.getElementById("copy-spark").hidden = false;
+  sparkActions.hidden = false;
   chamberInstruction.textContent = "the grid hums awake";
-  setWhisper("a ghost signal has entered the room", "shape it... or draw another");
+  setWhisper("a ghost signal has entered the room", "shape it... or reroute it");
   document.body.classList.add("spark-awake");
 }
 
@@ -182,6 +183,8 @@ function mutateSpark() {
     mood: pick(moods.filter((item) => item !== lastSpark.mood)),
     twist: pick(twists.filter((item) => item !== lastSpark.twist))
   });
+
+  setWhisper("the signal bends into a new path", "keep rerouting... or bring it to life");
 }
 
 function revealCharacter() {
@@ -252,12 +255,21 @@ function openVault() {
   lootResult.hidden = false;
   lootResult.className = `echo-card echo-vault ${vault.className}`;
   lootResult.innerHTML = `<span class="rarity-badge">${escapeHtml(vault.rarity)}</span><br />${escapeHtml(vault.text)}` + COPY_BTN_HTML;
-  setWhisper("the room rewrites itself around the drop", "reroute it... or let it settle");
+  setWhisper("the room rewrites itself around the drop", "reroute it... or bring it to life");
   document.body.classList.add("vault-awake");
+}
+
+function bringSparkToLife() {
+  if (!lastSpark) {
+    return;
+  }
+
+  setWhisper("step into the canvas", "the chamber is ready for your hand");
 }
 
 generateQuestButton.addEventListener("click", () => buildSpark());
 mutateQuestButton.addEventListener("click", mutateSpark);
+bringToLifeButton.addEventListener("click", bringSparkToLife);
 forgeCharacterButton.addEventListener("click", revealCharacter);
 claimLootButton.addEventListener("click", openVault);
 
@@ -297,16 +309,12 @@ document.addEventListener("click", (e) => {
   if (!btn) return;
 
   let text = "";
-  if (btn.id === "copy-spark") {
-    text = questResult.textContent;
-  } else {
-    const card = btn.closest(".echo-card");
-    if (card) {
-      const clone = card.cloneNode(true);
-      clone.querySelectorAll(".copy-btn").forEach((b) => b.remove());
-      clone.querySelectorAll("br").forEach((b) => b.replaceWith(" "));
-      text = clone.textContent.replace(/\s+/g, " ").trim();
-    }
+  const card = btn.closest(".echo-card");
+  if (card) {
+    const clone = card.cloneNode(true);
+    clone.querySelectorAll(".copy-btn").forEach((b) => b.remove());
+    clone.querySelectorAll("br").forEach((b) => b.replaceWith(" "));
+    text = clone.textContent.replace(/\s+/g, " ").trim();
   }
 
   if (!text) return;
