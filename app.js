@@ -101,6 +101,7 @@ const forgeResult = document.getElementById("forge-result");
 const lootResult = document.getElementById("loot-result");
 const chamberInstruction = document.getElementById("chamber-instruction");
 const roomWhisper = document.getElementById("room-whisper");
+const roomWhisperNote = document.getElementById("room-whisper-note");
 
 const generateQuestButton = document.getElementById("generate-quest");
 const mutateQuestButton = document.getElementById("mutate-quest");
@@ -124,6 +125,11 @@ function escapeHtml(text) {
   return String(text).replace(/[&<>"']/g, (char) => replacements[char]);
 }
 
+function setWhisper(text, note) {
+  roomWhisper.textContent = text;
+  roomWhisperNote.textContent = note;
+}
+
 function awakenChamber() {
   forgeCharacterButton.dataset.dragUnlocked = "true";
   claimLootButton.dataset.dragUnlocked = "true";
@@ -132,7 +138,7 @@ function awakenChamber() {
   mutateQuestButton.hidden = false;
   document.getElementById("copy-spark").hidden = false;
   chamberInstruction.textContent = "the grid hums awake";
-  roomWhisper.textContent = "a ghost signal has entered the room";
+  setWhisper("a ghost signal has entered the room", "shape it... or draw another");
   document.body.classList.add("spark-awake");
 }
 
@@ -195,7 +201,7 @@ function revealCharacter() {
     `They carry ${escapeHtml(lastCharacter.trait)}.`,
     `${escapeHtml(lastCharacter.hook)}`
   ].join(" ") + COPY_BTN_HTML;
-  roomWhisper.textContent = "a ghost-guide gathers in the glass";
+  setWhisper("a ghost-guide gathers in the glass", "the cache hums with signal");
   document.body.classList.add("mirror-awake");
 }
 
@@ -246,7 +252,7 @@ function openVault() {
   lootResult.hidden = false;
   lootResult.className = `echo-card echo-vault ${vault.className}`;
   lootResult.innerHTML = `<span class="rarity-badge">${escapeHtml(vault.rarity)}</span><br />${escapeHtml(vault.text)}` + COPY_BTN_HTML;
-  roomWhisper.textContent = "the room rewrites itself around the drop";
+  setWhisper("the room rewrites itself around the drop", "reroute it... or let it settle");
   document.body.classList.add("vault-awake");
 }
 

@@ -14,7 +14,7 @@
       href="https://fonts.googleapis.com/css2?family=Bungee&family=Manrope:wght@400;500;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="style.css?v=20260426b" />
+    <link rel="stylesheet" href="style.css?v=20260501a" />
   </head>
   <body>
     <div class="bg-layer bg-layer-a"></div>
@@ -33,7 +33,10 @@
           <span></span><span></span><span></span><span></span>
         </div>
 
-        <p class="room-whisper" id="room-whisper">Boot the vision.</p>
+        <div class="room-whispers" aria-live="polite">
+          <p class="room-whisper" id="room-whisper">Boot the vision.</p>
+          <p class="room-whisper-note" id="room-whisper-note">the sigil hums beneath you</p>
+        </div>
 
         <!-- Rug sigil — the first and primary spark trigger -->
         <button class="hotspot hotspot-rug" id="generate-quest" type="button" aria-label="Touch the signal sigil to draw a spark">
@@ -120,6 +123,6 @@
       </div>
     </div>
 
-    <script src="app.js?v=20260426b"></script>
+    <script src="app.js?v=20260501a"></script>
   </body>
 </html>
