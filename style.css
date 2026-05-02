@@ -281,6 +281,11 @@ body.spark-awake .lantern-ambient::before {
   flex-direction: column;
   align-items: center;
   gap: 0.24rem;
+  padding: 0.35rem 0.85rem 0.42rem;
+  border-radius: 999px;
+  background: rgba(12, 10, 16, 0.26);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
   pointer-events: none;
 }
 
@@ -293,10 +298,10 @@ body.spark-awake .lantern-ambient::before {
   font-style: italic;
   white-space: nowrap;
   text-align: center;
-  color: rgba(240, 220, 178, 0.46);
+  color: rgba(247, 229, 193, 0.84);
   text-shadow:
-    0 0 18px rgba(233, 148, 62, 0.5),
-    0 1px 4px rgba(0, 0, 0, 0.5);
+    0 0 10px rgba(233, 148, 62, 0.24),
+    0 1px 3px rgba(0, 0, 0, 0.74);
   pointer-events: none;
   transition: color 700ms ease, transform 700ms ease;
 }
@@ -308,10 +313,10 @@ body.spark-awake .lantern-ambient::before {
   font-style: italic;
   white-space: nowrap;
   text-align: center;
-  color: rgba(202, 220, 255, 0.4);
+  color: rgba(222, 233, 255, 0.76);
   text-shadow:
-    0 0 12px rgba(118, 155, 255, 0.22),
-    0 1px 4px rgba(0, 0, 0, 0.5);
+    0 0 8px rgba(118, 155, 255, 0.18),
+    0 1px 3px rgba(0, 0, 0, 0.74);
   transform: translateY(-4px);
   transition: color 700ms ease, transform 700ms ease;
 }
@@ -319,14 +324,14 @@ body.spark-awake .lantern-ambient::before {
 body.spark-awake  .room-whisper,
 body.mirror-awake .room-whisper,
 body.vault-awake  .room-whisper {
-  color: rgba(240, 220, 178, 0.62);
+  color: rgba(255, 237, 202, 0.96);
   transform: translateY(0);
 }
 
 body.spark-awake  .room-whisper-note,
 body.mirror-awake .room-whisper-note,
 body.vault-awake  .room-whisper-note {
-  color: rgba(202, 220, 255, 0.58);
+  color: rgba(233, 241, 255, 0.88);
   transform: translateY(0);
 }
 
@@ -886,6 +891,7 @@ body.vault-awake .guide-toggle {
   .room-whispers {
     top: 1.1rem;
     max-width: 84vw;
+    padding: 0.34rem 0.72rem 0.4rem;
   }
 
   .room-whisper {
